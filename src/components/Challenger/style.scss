@@ -1,0 +1,83 @@
+.challenger-content{
+    height: auto;
+    align-items: center;
+}
+
+.statement-content{
+    width: 100%;
+    padding-left: 30px;
+    height: 100px;
+    margin: 20px;
+    display: block;
+}
+
+.questions-number{
+    height: 90px;
+    width: 90px;
+    background-color: white;
+    border-radius: 50%;
+    float: left;
+    text-align: center;
+    display: table;
+
+    p {
+        display: table-cell; 
+        vertical-align: middle; 
+        font-size: 40px;
+    }
+}
+
+.question-statement{
+    float: left;
+    width: 1000px;
+    height: 90px;
+    margin-left: 30px;
+    padding: 10px;
+    text-align: left;
+    background-color: aliceblue;
+    overflow-wrap: break-word;
+    overflow-y: auto;
+}
+
+.options-box{
+    height: auto;
+    margin-bottom: 20px; 
+}
+
+.one-option{
+    background-color: white;
+    height: 60px;
+    text-align: left;
+    padding: 5px;
+    width: 900px;
+    margin: 0 auto;
+    margin-top: 10px;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    display:flex;
+    align-items:center;
+    cursor: pointer;
+
+    span {
+        height: 30px;
+        min-width: 30px;
+        background-color: rgb(180, 118, 42);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        margin-right: 5px;
+        justify-content: center;
+    }
+}
+
+.invisible{
+    display: none;
+}
+
+.invisible:checked ~ label{
+    background-color: yellow;
+}
+
+.btn-confirm{
+    margin-top: 20px;
+}

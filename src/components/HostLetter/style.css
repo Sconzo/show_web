@@ -1,0 +1,25 @@
+.letter {
+    background-color: #747480;
+    width: 50%;
+    text-align: center;
+    padding: 30px 30px ;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.letter-title {
+    text-align: left;
+    margin-left: 5px;
+}
+
+.letter-items{
+    text-align: justify;
+    margin: 10px 20px;
+}
+
+.letter-button{
+    float: right;
+}

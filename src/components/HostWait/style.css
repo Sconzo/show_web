@@ -1,0 +1,10 @@
+.host-wait-content{
+    height: auto;
+    color: white;
+}
+
+.host-wait-title{
+    margin: 20px;
+    display: block;
+    font-size: 50px;
+}

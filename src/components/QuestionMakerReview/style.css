@@ -1,0 +1,55 @@
+.review-content{
+    background-color: lightgray;
+    margin: 30px;
+    height: auto;
+    padding: 10px;
+}
+
+.block-question{
+    height: auto;
+    background-color: gray;
+    margin: 10px;
+}
+
+.question-header{
+    display: flex;
+    background-color: rgb(94, 92, 92);
+    margin-bottom: 10px;
+}
+
+.question-title{
+    padding: 10px
+}
+
+.question-difficulty{
+    background-color: rgb(171, 161, 161);
+    padding: 10px 20px;
+    margin-left: auto;
+    order: 2;
+}
+
+.option-block{
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.alternative{
+    height: 30px;
+}
+
+.circle-green {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: green;
+    float: left;
+    margin: 4px 5px 0px 5px;
+ }
+ .circle-red {
+     width: 8px;
+     height: 8px;
+     border-radius: 50%;
+     background-color: red;
+     float: left;
+     margin: 4px 5px 0px 5px;
+  }

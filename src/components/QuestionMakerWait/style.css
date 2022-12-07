@@ -1,0 +1,25 @@
+.question-maker-wait {
+    background-color: #747480;
+    width: 50%;
+    text-align: center;
+    padding: 30px 30px ;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.question-maker-wait-title {
+    text-align: left;
+    margin-left: 5px;
+}
+
+.question-maker-wait-items{
+    text-align: justify;
+    margin: 10px 20px;
+}
+
+.question-maker-wait-button{
+    float: right;
+}

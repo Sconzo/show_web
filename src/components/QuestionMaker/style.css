@@ -1,0 +1,162 @@
+.content-maker{
+    position: relative;
+    color: #FFFFFF;
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    width:100%;
+    text-align:center;
+}
+
+.first-line{
+    width: 100%;
+}
+
+.question-tittle{
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+    padding: 0px 30px;
+    float: left;
+}
+
+.toggle-inputs{
+    text-align: left;
+    display: inline-block;
+    margin:0 auto;
+    width: 33%;
+    float: left;
+    margin-right: 20px;
+    margin-left: 60px;
+    
+}
+
+.multiple-choice-input{
+    display:flex;
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center;
+    float: left;
+    width: 33%;
+}
+
+.true-or-false-input{
+    display:flex;
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center
+}
+
+
+select {
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    appearance:none;
+    outline:0;
+    box-shadow:none;
+    border:0!important;
+    background: #5c6664;
+    background-image: none;
+    flex: 1;
+    padding: 0 .5em;
+    color:#fff;
+    cursor:pointer;
+    font-size: 1em;
+    font-family: 'Open Sans', sans-serif;
+ }
+ select::-ms-expand {
+    display: none;
+ }
+ .select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 2em;
+    line-height: 2.3;
+    background: #5c6664;
+    overflow: hidden;
+    border-radius: .25em;
+    
+ }
+ .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #5c6664;
+    cursor:pointer;
+    pointer-events:none;
+    transition:.25s all ease;
+ }
+ .select:hover::after {
+    color: #23b499;
+ }
+ 
+.question-text{
+    margin-top: 40px;
+}
+
+.question-text textarea {
+    height: 80px;
+    border: 2px solid black;
+    background-color: transparent;
+    color: white;
+    margin-left: 15px;
+    width: 70%;
+    resize: none;
+    font-size: 16px;
+    margin-top:10px;
+}
+
+.question-text button {
+    height: 30px;
+    padding: 0 20px;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.all-options{
+    background-color: transparent;
+    height: auto;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    
+}
+
+.option{
+    background-color: grey;
+    height: 60px;
+    line-height: 60px;
+}
+
+.option-select{
+    float: left;
+}
+
+.option-letter{
+    float: left;
+    font-size: 20px;
+    width: 10px;
+    margin-left: 5px;
+}
+
+.option-textarea{
+    float: left;
+    resize: none;
+    margin-top: 12px;
+    margin-left: 20px;
+}
+
+.btn-save{
+    cursor: pointer;
+}
+
+input[name="type-radio"], input[name="option-radio"] {
+	accent-color: green;
+}
