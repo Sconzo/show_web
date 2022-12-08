@@ -16,41 +16,6 @@ const Challenger = () => {
     return (<></>)
   }
 
-  const multipleChoice2 = () => {
-    return (
-      <div className="options-box">
-        <div
-          className="one-option"
-          style={{
-            backgroundColor: wasClicked ? '#FFE600' : '',
-          }}
-          onClick={handleClick}>
-          <div>
-            <p>A</p>
-          </div>
-          <p>UMM</p>
-        </div>
-        <div className="one-option">
-          <div>
-            <p>B</p>
-          </div>
-          <p>DOSSISDOSSISDOSSISDOSSISDOS SISDOSSISDOSSISDOSSISDOSSISDOSSI SDOSSISDOSSISDOSSI SDOSSISDOSSISDOSSISDOSSISD OSSISDOSSISDOSSISDOSSISDOSSISDOSSISDOSSIS</p>
-        </div>
-        <div className="one-option">
-          <div>
-            <p>C</p>
-          </div>
-          <p>TES</p>
-        </div>
-        <div className="one-option">
-          <div>
-            <p>D</p>
-          </div>
-          <p>QUAR</p>
-        </div>
-      </div>
-    )
-  }
 
   const multipleChoice = () => {
     return (

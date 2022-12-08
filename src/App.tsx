@@ -11,9 +11,12 @@ import HostWait from "./components/HostWait";
 import QuestionMakerReview from "./components/QuestionMakerReview";
 import QuestionMakerWait from "./components/QuestionMakerWait";
 import Challenger from "./components/Challenger";
+import Questions from "./components/Questions";
 
 
 function App() : JSX.Element {
+
+  let questions = [{teste:""}];
   return (
     <>
     <Header/>
@@ -28,6 +31,7 @@ function App() : JSX.Element {
       <Route path="/host-wait" element = {<HostWait/>}></Route>
       <Route path="/review" element = {<QuestionMakerReview/>}></Route>
       <Route path="/challenger" element = {<Challenger/>}></Route>
+      <Route path="/test" element = {<Questions questions = {questions}/>}></Route>
     </Routes>
     </>
 )}

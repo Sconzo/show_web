@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
+import { getQuestionById, saveQuestion } from "../../services/questionsService";
+
+
 
 function QuestionMaker() {
   const num: number = 2
@@ -35,12 +38,11 @@ function QuestionMaker() {
   ]
 
   const initialFormData = {
-    questionNumber: 0,
-    typeMultipleChoice: false,
-    typeTrueOrFalse: false,
-    difficulty: "",
-    questionStatement: "",
-    options: optArray
+    questionDescription: "",
+    type:"",
+    level:"",
+    options:optArray,   
+    sessionId:1,
   };
 
   const [trigger, updateTrigger] = useState("")
@@ -79,21 +81,19 @@ function QuestionMaker() {
       if (e.target.value === "typeTrueOrFalse") {
         updateFormData({
           ...formData,
-          ["typeMultipleChoice"]: false,
-          [e.target.value]: true
+          ["type"]: "TRUE_OR_FALSE"
         });
       } else if (e.target.value === "typeMultipleChoice") {
         updateFormData({
           ...formData,
-          [e.target.value]: true,
-          ["typeTrueOrFalse"]: false
+          ["type"]: "MULTIPLE_CHOICE"
         });
       }
     }
     else if (e.target.type === "select-one") {
       updateFormData({
         ...formData,
-        ["difficulty"]: e.target.value.trim()
+        ["level"]: e.target.value.trim()
       });
     }
     else {
@@ -115,7 +115,10 @@ function QuestionMaker() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    routeChangeGroupLeader();
+    console.log(formData)
+    const response = saveQuestion(formData);
+    response.then(data => console.log(data));
+    //routeChangeGroupLeader();
   }
 
 
@@ -298,9 +301,9 @@ function QuestionMaker() {
             <div className="select">
               <select defaultValue={""} onChange={($event) => handleChange($event)}>
                 <option >Selecione a Dificuldade</option>
-                <option value="easy">Fácil</option>
-                <option value="intermediate">Média</option>
-                <option value="hard">Difícil</option>
+                <option value="EASY">Fácil</option>
+                <option value="INTERMEDIATE">Média</option>
+                <option value="HARD">Difícil</option>
               </select>
             </div>
           </div>
@@ -309,11 +312,8 @@ function QuestionMaker() {
             <textarea
               rows={5}
               cols={140}
-              name="questionStatement"
-              onChange={(e) => handleChange(e)}
-              value="teste" />
-
-
+              name="questionDescription"
+              onChange={(e) => handleChange(e)} />
           </div>
           {selectKindOfQuestionDisplay(trigger)}
           <button
@@ -324,10 +324,6 @@ function QuestionMaker() {
       </div>
     </>
   )
-
-
-
-
 }
 
 export default QuestionMaker
