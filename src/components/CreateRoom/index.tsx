@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.scss"
 import { useNavigate } from "react-router-dom";
+import { saveRoom } from "../../services/rommService";
 
 const CreateRoom = () => {
 
@@ -24,6 +25,10 @@ const CreateRoom = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
+<<<<<<< HEAD
+=======
+        saveRoom(formData)
+>>>>>>> 387cd9ef55cfaf29027966c41a1820127f49a635
         //console.log(formData);
         routeChange();
     };
