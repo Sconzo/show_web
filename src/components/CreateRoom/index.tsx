@@ -1,23 +1,23 @@
 import React from "react";
 import "./style.scss"
 import { useNavigate } from "react-router-dom";
+import { saveRoom } from "../../services/rommService";
 
 const CreateRoom = () => {
 
     const initialFormData = Object.freeze({
-        name: "",
+        sessionName: "",
         questionsPerChallenger: "",
         numberOfChallengers: "",
         numberOfGroups: "",
         cards: false,
-        collegeHelp: false,
+        studentsHelp: false,
         audienceHelp: false,
-        jump: false,
+        skips: false,
     });
 
     let navigate = useNavigate(); 
     const routeChange = () =>{ 
-        let path = `create-room`; 
         navigate("/");
       }
 
@@ -25,7 +25,8 @@ const CreateRoom = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        console.log(formData);
+        saveRoom(formData)
+        //console.log(formData);
         routeChange();
     };
 
@@ -62,7 +63,7 @@ const CreateRoom = () => {
                             <input
                                 type="text"
                                 className="input-text"
-                                name="name"
+                                name="sessionName"
                                 onChange={handleChange} />
                         </label>
 
@@ -110,7 +111,7 @@ const CreateRoom = () => {
                             <input
                                 type="checkbox"
                                 className="input-toggle"
-                                name="collegeHelp"
+                                name="studentsHelp"
                                 onChange={handleChange} />
                         </label>
                         <label>
