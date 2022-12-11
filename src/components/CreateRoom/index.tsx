@@ -2,18 +2,20 @@ import React from "react";
 import "./style.scss"
 import { useNavigate } from "react-router-dom";
 import { saveRoom } from "../../services/rommService";
+import { RoomsService } from "../../services/Rooms/RommsService";
+import { api } from "../../services/api";
 
 const CreateRoom = () => {
 
     const initialFormData = Object.freeze({
         sessionName: "",
-        questionsPerChallenger: "",
-        numberOfChallengers: "",
-        numberOfGroups: "",
+        numberOfQuestions: 0,
+        numberOfGroups: 0,
+        numberOfChallengers: 0,
         cards: false,
-        studentsHelp: false,
-        audienceHelp: false,
-        skips: false,
+        studentsHelp:false,
+        skips:false,
+        audienceHelp:false,
     });
 
     let navigate = useNavigate(); 
@@ -25,10 +27,8 @@ const CreateRoom = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-<<<<<<< HEAD
-=======
-        saveRoom(formData)
->>>>>>> 387cd9ef55cfaf29027966c41a1820127f49a635
+        //saveRoom(formData )
+        RoomsService.create(formData)
         //console.log(formData);
         routeChange();
     };
@@ -130,7 +130,7 @@ const CreateRoom = () => {
                             <input
                                 type="checkbox"
                                 className="input-toggle"
-                                name="jump" 
+                                name="skips" 
                                 onChange={handleChange}/>
                         </label>
                     </div>

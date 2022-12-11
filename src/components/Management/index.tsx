@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom/dist"
 import Modal from "../Modal";
-import axios, { AxiosResponse } from "axios";
 import { RoomsService } from "../../services/Rooms/RommsService";
 import { RoomList } from "../../services/Rooms/RommsService";
 
@@ -14,13 +13,16 @@ const roomsData : RoomList = [
     }
 ]
 
+export const currentSessionId = 0;
+
 const Management = () => {
+    
+    const [allRooms, setAllRooms] = useState(roomsData)
 
     const [rooms, setRooms] = useState(roomsData);
 
     const [trigger, setTrigger] = useState(false);
 
-    
     useEffect(() => {
         RoomsService.getAll()
         .then(response => {
@@ -28,23 +30,28 @@ const Management = () => {
                 alert(response.message)
                 return
             }
-            setRooms(response)})
+            setRooms(response)
+            setAllRooms(response)})
       }, []);
 
-    let strSearch = "";
     const getRoomsFiltered = (event: any, strSearch: string) => {
         event.preventDefault();
-        const data = roomsData.filter(room => room.sessionName.includes(strSearch) || room.createdIn.includes(strSearch));
+        const data = allRooms.filter(room => 
+            room.sessionName.toLowerCase().includes(strSearch.toLowerCase()) || 
+            room.createdIn.includes(strSearch));
+        
         setRooms(data);
     };
-
+    let strSearch = "";
     const handleInput = (event: any) => {
         strSearch = event.target.value;
+        
     };
 
     
-    const showModal = () =>{
+    const showModal = (sessionId:number) =>{
         setTrigger(true);
+        debugger
     }
 
     let navigate = useNavigate();
@@ -63,6 +70,11 @@ const Management = () => {
 
     if(!rooms) return null;
     
+  function showOnlyDate(createdIn: string): import("react").ReactNode {
+    let date = createdIn.slice(0,10);
+    return date;
+  }
+
     return (
         <>
             <div className="management-content">
@@ -89,13 +101,13 @@ const Management = () => {
                         <tbody>
                             {rooms.map(room => (
                                 <tr>
-                                    <td>{room.createdIn}</td>
+                                    <td>{showOnlyDate(room.createdIn)}</td>
                                     <td>{room.sessionName}</td>
                                     <td>
                                         <button 
                                             className="join-button" 
                                             type="button"
-                                            onClick={showModal}>Entrar</button>
+                                            onClick={() => showModal(room.sessionId)}>Entrar</button>
                                     </td>
                                 </tr>
                             ))}

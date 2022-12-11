@@ -13,7 +13,6 @@ import QuestionMakerWait from "./components/QuestionMakerWait";
 import Challenger from "./components/Challenger";
 import Questions from "./components/Questions";
 
-
 function App() : JSX.Element {
 
   let questions = [{teste:""}];

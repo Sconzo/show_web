@@ -7,16 +7,14 @@ interface IRoomSummary{
   }
   
 interface IRoom{
-    sessionId: 0,
     sessionName: "",
     numberOfQuestions: 0,
     numberOfGroups: 0,
     numberOfChallengers: 0,
     cards: false,
-    students:false,
+    studentsHelp:false,
     skips:false,
     audienceHelp:false,
-    createdIn: "",
   }
 export type Room = IRoom
 export type RoomList = IRoomSummary[]
@@ -34,11 +32,11 @@ const getAll = async (): Promise<RoomList | Error> => {
     }
 }
 
-const create = async (data : Omit<Room, "id">): Promise<number | Error> => {
+const create = async (room : Room): Promise<string | Error> => {
     try{
-        const { data } = await Api.post<Room>('/session')
+        const { data } = await Api.post<IRoom>('/session', room)
         if(data){
-            return(data.sessionId);
+            return(data.sessionName);
         }
         return new Error("Erro ao criar sala");
     }
