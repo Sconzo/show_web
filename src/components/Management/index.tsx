@@ -1,40 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom/dist"
 import Modal from "../Modal";
+import axios, { AxiosResponse } from "axios";
+import { RoomsService } from "../../services/Rooms/RommsService";
+import { RoomList } from "../../services/Rooms/RommsService";
 
-
-const roomsData = [
+const roomsData : RoomList = [
     {
-        id: 1,
-        name: "Champions",
-        data: "20/12/2022",
-    },
-    {
-        id: 2,
-        name: "X-men",
-        data: "01/04/2023",
-    },
-    {
-        id: 3,
-        name: "Panela FC",
-        data: "15/09/2021",
-    },
-    {
-        id: 4,
-        name: "Teste",
-        data: "19/04/2022",
-    },
-    {
-        id: 5,
-        name: "Boi do Piauí",
-        data: "05/03/2022",
-    },
-    {
-        id: 3,
-        name: "Honda Civic",
-        data: "28/08/2022",
-    },
+        sessionId: 0,
+        sessionName: "",
+        createdIn: "",
+    }
 ]
 
 const Management = () => {
@@ -43,10 +20,21 @@ const Management = () => {
 
     const [trigger, setTrigger] = useState(false);
 
+    
+    useEffect(() => {
+        RoomsService.getAll()
+        .then(response => {
+            if(response instanceof Error){
+                alert(response.message)
+                return
+            }
+            setRooms(response)})
+      }, []);
+
     let strSearch = "";
     const getRoomsFiltered = (event: any, strSearch: string) => {
         event.preventDefault();
-        const data = roomsData.filter(room => room.name.includes(strSearch) || room.data.includes(strSearch));
+        const data = roomsData.filter(room => room.sessionName.includes(strSearch) || room.createdIn.includes(strSearch));
         setRooms(data);
     };
 
@@ -73,6 +61,7 @@ const Management = () => {
         navigate(path);
     }
 
+    if(!rooms) return null;
     
     return (
         <>
@@ -100,8 +89,8 @@ const Management = () => {
                         <tbody>
                             {rooms.map(room => (
                                 <tr>
-                                    <td>{room.data}</td>
-                                    <td>{room.name}</td>
+                                    <td>{room.createdIn}</td>
+                                    <td>{room.sessionName}</td>
                                     <td>
                                         <button 
                                             className="join-button" 
