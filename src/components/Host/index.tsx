@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ChallengerList, ChallengerService } from "../../services/Challengers/ChallengerService";
+import { currentSessionId } from "../Management";
 import "./style.css";
 
 const challengers = [
@@ -22,6 +24,7 @@ function Host() {
 
     const getChallenger = (event : any, challengerName : any) => {
         event.preventDefault();
+        console.log(currentSessionId)
         let challenger;
         if(challengerName.length > 0){
             if(challengerList.length>0){
@@ -59,10 +62,28 @@ function Host() {
 
         var table = document.getElementsByTagName('table')[0];
         var arr = [];
+        
+        
+        var saveList : ChallengerList = [
+            
+        ]
         for (let i = 0; i < table.rows.length; i++){
+            var basicObject = {
+                name:"",
+                score:0,
+                sessionId:10,
+                cardsLeft:0,
+                studentsHelpLeft:0,
+                skipsLeft:0,
+                audienceHelpLeft:0,
+            }
             arr.push(table.rows[i].cells[1].innerText);
+            saveList.push(basicObject)
+            saveList[i].name= table.rows[i].cells[1].innerText;
         }
-        routeChange();
+        ChallengerService.create(saveList)
+        console.log(saveList)
+        //routeChange();
         
     }
 
