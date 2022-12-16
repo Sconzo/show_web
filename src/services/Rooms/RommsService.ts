@@ -1,11 +1,5 @@
 import { Api } from "../axios-config"
 
-interface IRoomSummary{
-    sessionId: 0,
-    sessionName: "",
-    createdIn: "",
-  }
-  
 interface IRoom{
     sessionName: "",
     numberOfQuestions: 0,
@@ -15,9 +9,12 @@ interface IRoom{
     studentsHelp:false,
     skips:false,
     audienceHelp:false,
+    sessionId: 0,
+    createdIn: "",
   }
+
 export type Room = IRoom
-export type RoomList = IRoomSummary[]
+export type RoomList = IRoom[]
 
 const getAll = async (): Promise<RoomList | Error> => {
     try{

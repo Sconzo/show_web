@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChallengerList, ChallengerService } from "../../services/Challengers/ChallengerService";
+import useSession from "../../zus/session";
 import { currentSessionId } from "../Management";
 import "./style.css";
 
@@ -13,6 +14,9 @@ const challengers = [
 
 
 function Host() {
+
+    const session = useSession(state => state.session)
+
     challengers.pop();
     const [challengerList, setChallengerList] = useState(challengers);
 
@@ -41,7 +45,7 @@ function Host() {
             }
             setChallengerList([...challengerList, challenger])
         }
-        event.target.reset();
+        (document.getElementById("textareaInput") as HTMLInputElement).value = "";
     }
     
 
@@ -49,7 +53,6 @@ function Host() {
         event.preventDefault();
         const data = challengerList.filter(chal => chal.id != challenger.id);
         setChallengerList(data);
-        console.log(data);
     }
 
     let navigate = useNavigate();
@@ -57,21 +60,17 @@ function Host() {
         let path = '/host-wait';
         navigate(path);
     }
-
+    
     const saveChallengers = (event : any, col : number) =>{
-
+        
         var table = document.getElementsByTagName('table')[0];
         var arr = [];
-        
-        
-        var saveList : ChallengerList = [
-            
-        ]
+        var saveList : ChallengerList = []
         for (let i = 0; i < table.rows.length; i++){
             var basicObject = {
                 name:"",
                 score:0,
-                sessionId:10,
+                sessionId:session.sessionId,
                 cardsLeft:0,
                 studentsHelpLeft:0,
                 skipsLeft:0,
@@ -82,8 +81,7 @@ function Host() {
             saveList[i].name= table.rows[i].cells[1].innerText;
         }
         ChallengerService.create(saveList)
-        console.log(saveList)
-        //routeChange();
+        routeChange();
         
     }
 
@@ -97,6 +95,7 @@ function Host() {
                         className="input-name"
                         type={"text"}
                         placeholder="Ex.: Fávaro"
+                        id="textareaInput"
                         onChange={($event) => handleInput($event)}
                         />
                     <button 

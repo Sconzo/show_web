@@ -1,5 +1,6 @@
 import "./style.scss"
 import { useState } from "react";
+import {QuestionService} from "../../services/Questions/QuestionSerivice"
 
 const Challenger = () => {
 
@@ -16,7 +17,7 @@ const Challenger = () => {
     return (<></>)
   }
 
-
+  QuestionService.getQuestionById
   const multipleChoice = () => {
     return (
       <div>
@@ -128,9 +129,9 @@ const Challenger = () => {
         </nav>
       </div>)
   }
-
-
   const handleClick = () => {
+  }
+  const onChangeQuestion = (e:any) =>{
   }
 
   return (

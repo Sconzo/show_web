@@ -16,6 +16,8 @@ const CreateRoom = () => {
         studentsHelp:false,
         skips:false,
         audienceHelp:false,
+        sessionId: 0,
+        createdIn: "",
     });
 
     let navigate = useNavigate(); 

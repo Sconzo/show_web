@@ -2,16 +2,11 @@ import { useState, useEffect, useContext } from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom/dist"
 import Modal from "../Modal";
-import { RoomsService } from "../../services/Rooms/RommsService";
+import { Room, RoomsService } from "../../services/Rooms/RommsService";
 import { RoomList } from "../../services/Rooms/RommsService";
+import useSession from "../../zus/session";
 
-const roomsData : RoomList = [
-    {
-        sessionId: 0,
-        sessionName: "",
-        createdIn: "",
-    }
-]
+const roomsData : RoomList = []
 
 export const currentSessionId = 0;
 
@@ -48,10 +43,12 @@ const Management = () => {
         
     };
 
-    
-    const showModal = (sessionId:number) =>{
+    const changeSession = useSession(state => state.changeSession)
+    const showModal = (session:Room) =>{
+        console.log(session)
+        changeSession(session)
+        console.log(session)
         setTrigger(true);
-        debugger
     }
 
     let navigate = useNavigate();
@@ -107,7 +104,7 @@ const Management = () => {
                                         <button 
                                             className="join-button" 
                                             type="button"
-                                            onClick={() => showModal(room.sessionId)}>Entrar</button>
+                                            onClick={() => showModal(room)}>Entrar</button>
                                     </td>
                                 </tr>
                             ))}
