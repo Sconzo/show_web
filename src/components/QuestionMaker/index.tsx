@@ -2,7 +2,9 @@ import { useState } from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { getQuestionById, saveQuestion } from "../../services/questionsService";
-
+import { optArrayType, QuestionService } from "../../services/Questions/QuestionSerivice";
+import useSession from "../../zus/session";
+import getQuestions from "../../zus/question";
 
 
 function QuestionMaker() {
@@ -14,7 +16,7 @@ function QuestionMaker() {
     navigate(path);
   }
 
-  const optArray = [
+  const optArray : optArrayType = [
     {
       optionNumber: 1,
       correctOption: false,
@@ -42,7 +44,7 @@ function QuestionMaker() {
     type:"",
     level:"",
     options:optArray,   
-    sessionId:1,
+    sessionId:0,
   };
 
   const [trigger, updateTrigger] = useState("")
@@ -99,7 +101,8 @@ function QuestionMaker() {
     else {
       updateFormData({
         ...formData,
-        [e.target.name]: e.target.value.trim()
+        [e.target.name]: e.target.value.trim(),
+        ["sessionId"]: session.sessionId
       });
     }
   };
@@ -113,14 +116,14 @@ function QuestionMaker() {
     });
   }
 
+  const session = useSession(state => state.session)
+  const addQuestion = getQuestions(state => state.addQuestion)
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(formData)
-    const response = saveQuestion(formData);
-    response.then(data => console.log(data));
-    //routeChangeGroupLeader();
+    addQuestion(formData)
+    routeChangeGroupLeader();
   }
-
 
   const multipleChoice = () => {
     return (<div className="all-options">
