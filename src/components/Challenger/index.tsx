@@ -9,6 +9,7 @@ const Challenger = () => {
   const [optionSelected, setOptionSelected] = useState(0);
   const [currentType, updateCurrentType] = useState("typeMultipleChoice")
   const [activeIndex, setActiveIndex] = useState(0)
+  const [notAnswered, setNotAnswered] = useState(true)
 
   const selectKindOfQuestionDisplay = (type: string) => {
     if (type === "MULTIPLE_CHOICE") {
@@ -35,6 +36,7 @@ const Challenger = () => {
                 name="answers"
                 className="invisible"
                 id="answer1"
+                disabled={!notAnswered}
               />
               <label
                 className="one-option"
@@ -51,6 +53,7 @@ const Challenger = () => {
                 name="answers"
                 className="invisible"
                 id="answer2"
+                disabled={!notAnswered}
               />
               <label
                 className="one-option"
@@ -66,6 +69,7 @@ const Challenger = () => {
                 name="answers"
                 className="invisible"
                 id="answer3"
+                disabled={!notAnswered}
               />
               <label
                 className="one-option"
@@ -81,6 +85,7 @@ const Challenger = () => {
                 name="answers"
                 className="invisible"
                 id="answer4"
+                disabled={!notAnswered}
               />
               <label
                 className="one-option"
@@ -106,6 +111,7 @@ const Challenger = () => {
                 name="answers"
                 className="invisible"
                 id="answer1"
+                disabled={!notAnswered}
               />
               <label
                 className="one-option"
@@ -120,6 +126,7 @@ const Challenger = () => {
                 name="answers"
                 className="invisible"
                 id="answer2"
+                disabled={!notAnswered}
               />
               <label
                 className="one-option"
@@ -134,22 +141,35 @@ const Challenger = () => {
   }
   const handleClick = (id:number) => {
     setOptionSelected(id)
+    if(notAnswered)
+    document.documentElement.style.setProperty('--color-option', 'yellow')
   }
   
   const onChangeQuestion = (e:any) =>{
-    
+    document.documentElement.style.setProperty('--color-option', 'white')
     const activeIndex = parseInt(e.target.dataset.index)
     setActiveIndex(activeIndex)
+    setNotAnswered(true)
   }
   
   const handleSubmit = () => {
-    const correct = QuestionService.checkCorrectAnswer(optionSelected,questionList[activeIndex].questionId)
+    QuestionService.checkCorrectAnswer(optionSelected,questionList[activeIndex].questionId)
     .then(response => {
       if(response instanceof Error){
           alert(response.message)
           return
-      }console.log(response)})
+      }
+      if(response){
+        document.documentElement.style.setProperty('--color-option', 'green')
+      }
+      else{
+        document.documentElement.style.setProperty('--color-option', 'red')
+      }
+      console.log(response)})
+      setNotAnswered(false)
   }
+
+
 
   return (
     <>
@@ -165,7 +185,7 @@ const Challenger = () => {
         {selectKindOfQuestionDisplay(questionList[activeIndex].type)}
         <div>
           {
-            activeIndex < questionList.length && <button onClick={onChangeQuestion} data-index={activeIndex + 1}>Enviar</button>
+            activeIndex < questionList.length && <button disabled={notAnswered} onClick={onChangeQuestion} data-index={activeIndex + 1}>Próxima</button>
           }
         </div>
         <button
