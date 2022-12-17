@@ -1,3 +1,4 @@
+import { QuestionDisplayList } from "../../zus/session"
 import { Api } from "../axios-config"
 
 export type optArrayType = [
@@ -32,6 +33,7 @@ interface IQuestion{
   }
 
 export type Question = IQuestion
+export type QuestionList = IQuestion[]
 
 const getQuestionById = async (): Promise<Question | Error> => {
     try{
@@ -46,11 +48,27 @@ const getQuestionById = async (): Promise<Question | Error> => {
     }
 }
 
-const getQuestionsForChallenger = async (): Promise<Question[] | Error> => {
+const getQuestionsForSession = async (questionId : number): Promise<QuestionDisplayList| Error> => {
     try{
-        const { data } = await Api.get('/question')
+        const { data } = await Api.get(`/question/${questionId}`)
         if(data){
             return(data);
+        }
+        return new Error("Sem dados");
+    }
+    catch (error){
+        return new Error("Sem dados");
+    }
+}
+
+const checkCorrectAnswer = async (choiceId : number, questionId : number): Promise<Boolean | Error> => {
+    try{
+        const { data } = await Api.get('/question/check',{ params: { 
+            choiceId: choiceId,
+            questionId: questionId,
+         } })
+        if(data || data===false){
+            return(data); 
         }
         return new Error("Sem dados");
     }
@@ -76,4 +94,6 @@ const createQuestion = async (questions : Question[]): Promise<string | Error> =
 export const QuestionService = {
     getQuestionById,
     createQuestion,
+    getQuestionsForSession,
+    checkCorrectAnswer
 }
