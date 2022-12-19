@@ -48,17 +48,45 @@ function QuestionMaker() {
     sessionId: 0,
   };
 
-  const [trigger, updateTrigger] = useState("");
+  const session = useSession((state) => state.session);
+  const addQuestion = getQuestions((state) => state.addQuestion);
+  const updateQuestion = getQuestions((state) => state.updateQuestion);
+  const questions = getQuestions((state) => state.questions);
+
+  const [trigger, updateTrigger] = useState(() => {
+    if (questions[0] === undefined) {
+      return "";
+    } else {
+      return questions[0].type;
+    }
+  });
+
   const [opt, updateOpt] = useState(optArray);
   const [formData, updateFormData] = useState(initialFormData);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [state, setState] = useState({
-    level: "",
-    type: "",
-    description: "",
-    optTF: "",
-    optMC: "",
-    options: optArray,
+  const [state, setState] = useState(() => {
+    if (questions[0] === undefined) {
+      return {
+        level: "",
+        type: "",
+        description: "",
+        optTF: "",
+        optMC: "",
+        options: optArray,
+      };
+    } else {
+      var tf = "";
+      var mc = "";
+      ({ mc, tf } = getMCandTF(questions[0], mc, tf));
+      return {
+        level: questions[0].level,
+        type: questions[0].type,
+        description: questions[0].questionDescription,
+        optTF: tf,
+        optMC: mc,
+        options: questions[0].options,
+      };
+    }
   });
   const [disableChangePage, setDisableChangePage] = useState(true);
 
@@ -125,7 +153,6 @@ function QuestionMaker() {
         ["type"]: Enviroment.MULTIPLE_CHOICE,
       });
     }
-    checkIfMayChangePage();
   };
 
   const handleChangeSelect = (e: any) => {
@@ -135,7 +162,6 @@ function QuestionMaker() {
       ...formData,
       ["level"]: e.target.value.trim(),
     });
-    checkIfMayChangePage();
   };
 
   const handleChangeTFInput = (value: any, e: any) => {
@@ -150,7 +176,6 @@ function QuestionMaker() {
       ...formData,
       ["options"]: arr,
     });
-    checkIfMayChangePage();
   };
 
   const handleChangeMCInput = (value: any, e: any) => {
@@ -164,7 +189,6 @@ function QuestionMaker() {
       ...formData,
       ["options"]: arr,
     });
-    checkIfMayChangePage();
   };
 
   const handleChangeDescription = (e: any) => {
@@ -175,7 +199,6 @@ function QuestionMaker() {
       [e.target.name]: e.target.value,
       ["sessionId"]: session.sessionId,
     });
-    checkIfMayChangePage();
   };
 
   const handleInputOption = (e: any) => {
@@ -186,13 +209,7 @@ function QuestionMaker() {
       ["options"]: arr,
     });
     setState({ ...state, ["options"]: arr });
-    checkIfMayChangePage();
   };
-
-  const session = useSession((state) => state.session);
-  const addQuestion = getQuestions((state) => state.addQuestion);
-  const updateQuestion = getQuestions((state) => state.updateQuestion);
-  const questions = getQuestions((state) => state.questions);
 
   const changeQuestion = (currentPage: number, e: any) => {
     e.preventDefault();
@@ -238,19 +255,7 @@ function QuestionMaker() {
       var q = questions[activeIndex + currentPage];
       let mc = "";
       let tf = "";
-      if (q.type === Enviroment.MULTIPLE_CHOICE) {
-        q.options.forEach((item) => {
-          if (item.correctOption) {
-            mc = String(item.optionNumber - 1);
-          }
-        });
-      } else if (q.type === Enviroment.TRUE_OR_FALSE) {
-        if (q.options[0].correctOption) {
-          tf = "0";
-        } else if (q.options[1].correctOption) {
-          tf = "1";
-        }
-      }
+      ({ mc, tf } = getMCandTF(q, mc, tf));
       updateOpt(q.options);
       updateTrigger(q.type);
       setState({
@@ -267,8 +272,10 @@ function QuestionMaker() {
     const index = parseInt(e.target.dataset.index);
     setActiveIndex(index);
   };
-
+  console.log("TESTE");
+  console.log(state);
   const handleSubmit = (e: any) => {
+    changeQuestion(1, e);
     console.log("State : ");
     console.log(state);
     console.log("Form : ");
@@ -517,3 +524,30 @@ function QuestionMaker() {
 }
 
 export default QuestionMaker;
+
+function getMCandTF(
+  q: {
+    questionDescription: string;
+    type: string;
+    level: string;
+    options: optArrayType;
+    sessionId: number;
+  },
+  mc: string,
+  tf: string
+) {
+  if (q.type === Enviroment.MULTIPLE_CHOICE) {
+    q.options.forEach((item) => {
+      if (item.correctOption) {
+        mc = String(item.optionNumber - 1);
+      }
+    });
+  } else if (q.type === Enviroment.TRUE_OR_FALSE) {
+    if (q.options[0].correctOption) {
+      tf = "0";
+    } else if (q.options[1].correctOption) {
+      tf = "1";
+    }
+  }
+  return { mc, tf };
+}
