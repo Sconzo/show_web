@@ -9,7 +9,7 @@ export interface IChallenger {
     skipsLeft:number,
     audienceHelpLeft:number,
 }
-
+export type Challenger = IChallenger;
 export type ChallengerList = IChallenger[]
 
 const create = async (challengers : ChallengerList): Promise<string | Error> => {

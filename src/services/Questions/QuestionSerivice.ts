@@ -35,9 +35,9 @@ interface IQuestion{
 export type Question = IQuestion
 export type QuestionList = IQuestion[]
 
-const getQuestionById = async (): Promise<Question | Error> => {
+const getQuestionById = async (questionId : number): Promise<Question | Error> => {
     try{
-        const { data } = await Api.get('/question')
+        const { data } = await Api.get(`/${questionId}`)
         if(data){
             return(data);
         }
@@ -48,9 +48,9 @@ const getQuestionById = async (): Promise<Question | Error> => {
     }
 }
 
-const getQuestionsForSession = async (questionId : number): Promise<QuestionDisplayList| Error> => {
+const getQuestionsForSession = async (sessionId : number): Promise<QuestionDisplayList| Error> => {
     try{
-        const { data } = await Api.get(`/question/${questionId}`)
+        const { data } = await Api.get(`/question/${sessionId}`)
         if(data){
             return(data);
         }

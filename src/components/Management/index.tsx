@@ -1,11 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import "./style.css";
-import { useNavigate } from "react-router-dom/dist";
+import { useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import { Room, RoomsService } from "../../services/Rooms/RommsService";
 import { RoomList } from "../../services/Rooms/RommsService";
 import useSession from "../../zus/session";
-
 const roomsData: RoomList = [];
 
 export const currentSessionId = 0;
@@ -14,6 +13,9 @@ const Management = () => {
   const [allRooms, setAllRooms] = useState(roomsData);
   const [rooms, setRooms] = useState(roomsData);
   const [trigger, setTrigger] = useState(false);
+  const [currentNumberOfQuestions, setCurrentNumberOfQuestions] = useState(0);
+  const [disableGroup, setDisableGroup] = useState(false);
+  const [totalQuestions, setTotalQuestions] = useState(0);
 
   useEffect(() => {
     RoomsService.getAll().then((response) => {
@@ -41,11 +43,38 @@ const Management = () => {
     strSearch = event.target.value;
   };
 
+  useEffect(() => {
+    if (totalQuestions >= currentNumberOfQuestions) {
+      setDisableGroup(true);
+    } else {
+      setDisableGroup(false);
+    }
+  }, [totalQuestions]);
+
   const changeSession = useSession((state) => state.changeSession);
   const showModal = (session: Room) => {
-    console.log(session);
+    RoomsService.getNumberOfQuestionsCreated(session.sessionId).then(
+      (response) => {
+        if (response instanceof Error) {
+          alert(response.message);
+          return;
+        }
+        setTotalQuestions(response);
+      }
+    );
     changeSession(session);
-    console.log(session);
+    setCurrentNumberOfQuestions(
+      session.numberOfQuestions * session.numberOfChallengers
+    );
+
+    if (
+      totalQuestions >= currentNumberOfQuestions &&
+      currentNumberOfQuestions !== 0
+    ) {
+      setDisableGroup(true);
+    } else {
+      setDisableGroup(false);
+    }
     setTrigger(true);
   };
 
@@ -117,7 +146,11 @@ const Management = () => {
           modalText="Como deseja entrar?"
         >
           <div>
-            <button className="modal-btn" onClick={routeChangeGroupLeader}>
+            <button
+              disabled={disableGroup}
+              className="modal-btn"
+              onClick={routeChangeGroupLeader}
+            >
               Líder de Grupo
             </button>
             <button className="modal-btn" onClick={routeChangeHost}>

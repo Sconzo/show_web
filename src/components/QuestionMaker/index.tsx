@@ -7,7 +7,7 @@ import {
   QuestionService,
 } from "../../services/Questions/QuestionSerivice";
 import useSession from "../../zus/session";
-import getQuestions from "../../zus/question";
+import useQuestions from "../../zus/question";
 import { Enviroment } from "../../enviroment";
 
 function QuestionMaker() {
@@ -49,9 +49,9 @@ function QuestionMaker() {
   };
 
   const session = useSession((state) => state.session);
-  const addQuestion = getQuestions((state) => state.addQuestion);
-  const updateQuestion = getQuestions((state) => state.updateQuestion);
-  const questions = getQuestions((state) => state.questions);
+  const addQuestion = useQuestions((state) => state.addQuestion);
+  const updateQuestion = useQuestions((state) => state.updateQuestion);
+  const questions = useQuestions((state) => state.questions);
 
   const [trigger, updateTrigger] = useState(() => {
     if (questions[0] === undefined) {
@@ -89,7 +89,6 @@ function QuestionMaker() {
     }
   });
   const [disableChangePage, setDisableChangePage] = useState(true);
-
   useEffect(() => {
     checkIfMayChangePage();
   }, [state]);
@@ -246,7 +245,6 @@ function QuestionMaker() {
           q.options[1].correctOption = true;
         }
       }
-
       updateQuestion(activeIndex, formData);
       updateFormData(initialFormData);
     }
@@ -268,20 +266,24 @@ function QuestionMaker() {
       });
 
       updateFormData(initialFormData);
+    } else {
+      updateTrigger("");
+      updateOpt(optArray);
+      setState({
+        level: "",
+        type: "",
+        description: "",
+        optTF: "",
+        optMC: "",
+        options: optArray,
+      });
     }
     const index = parseInt(e.target.dataset.index);
     setActiveIndex(index);
   };
-  console.log("TESTE");
-  console.log(state);
   const handleSubmit = (e: any) => {
     changeQuestion(1, e);
-    console.log("State : ");
-    console.log(state);
-    console.log("Form : ");
-    console.log(formData);
-    console.log("Questions : ");
-    console.log(questions);
+
     e.preventDefault();
 
     routeChangeGroupLeader();
@@ -431,13 +433,23 @@ function QuestionMaker() {
     return <></>;
   };
 
+  const numberOfQuestionsPerGroup =
+    (session.numberOfQuestions * session.numberOfChallengers) /
+    session.numberOfGroups;
+
+  console.log("State : ");
+  console.log(state);
+  console.log("Form : ");
+  console.log(formData);
+  console.log("Questions : ");
+  console.log(questions);
   return (
     <>
       <div className="content-maker">
         <form>
           <div className="first-line">
             <h1 className="question-tittle">
-              Questão {activeIndex + 1}/{session.numberOfQuestions}
+              Questão {activeIndex + 1}/{numberOfQuestionsPerGroup}
             </h1>
             <div className="toggle-inputs">
               <div className="multiple-choice-input">
@@ -497,7 +509,7 @@ function QuestionMaker() {
                 Anterior
               </button>
             )}
-            {activeIndex < session.numberOfQuestions - 1 && (
+            {activeIndex < numberOfQuestionsPerGroup - 1 && (
               <button
                 disabled={disableChangePage}
                 onClick={($event) => changeQuestion(1, event)}
@@ -507,7 +519,7 @@ function QuestionMaker() {
               </button>
             )}
           </div>
-          {activeIndex === session.numberOfQuestions - 1 && (
+          {activeIndex === numberOfQuestionsPerGroup - 1 && (
             <button
               disabled={disableChangePage}
               className="btn-save"

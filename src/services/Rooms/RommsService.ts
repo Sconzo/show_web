@@ -42,7 +42,21 @@ const create = async (room : Room): Promise<string | Error> => {
     }
 }
 
+const getNumberOfQuestionsCreated = async (sessionId:number): Promise<number | Error> => {
+    try{
+        const { data } = await Api.get(`/session/questions-created/${sessionId}`)
+        if(data || data === 0){
+            return(data);
+        }
+        return new Error("Sem dados");
+    }
+    catch (error){
+        return new Error("Sem dados");
+    }
+}
+
 export const RoomsService = {
     getAll,
     create,
+    getNumberOfQuestionsCreated
 }

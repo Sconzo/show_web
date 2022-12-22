@@ -30,7 +30,7 @@ interface IQuestionDisplay{
     sessionId:number,
   }
 
-  export type QuestionDisplayList = IQuestionDisplay[];
+export type QuestionDisplayList = IQuestionDisplay[];
 
 type CurrentSession = {
     session : Room,
