@@ -7,7 +7,7 @@ type QuestionList = {
     updateQuestion:(pos:number, question:Question) => void,
 }
 
-const getQuestions = create<QuestionList>((set) => ({
+const useQuestions = create<QuestionList>((set) => ({
     questions : [],
     
     addQuestion:(question : Question)=>{
@@ -20,4 +20,4 @@ const getQuestions = create<QuestionList>((set) => ({
     }
 }))
 
-export default getQuestions
+export default useQuestions

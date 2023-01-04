@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
-import getQuestions from "../../zus/question";
+import useQuestions from "../../zus/question";
 import { QuestionService } from "../../services/Questions/QuestionSerivice";
 
 const QuestionMakerReview = () => {
@@ -12,7 +12,7 @@ const QuestionMakerReview = () => {
   };
 
   const [questions, setQuestions] = useState(
-    getQuestions((state) => state.questions)
+    useQuestions((state) => state.questions)
   );
 
   const handleSubmit = () => {
@@ -91,7 +91,7 @@ const QuestionMakerReview = () => {
                     : "circle-red"
                 }
               ></div>
-              <h3 className="alternative">{"A)  " + "Verdadeiro"}</h3>
+              <h3 className="alternative">{"Verdadeiro"}</h3>
 
               <div
                 className={
@@ -100,7 +100,7 @@ const QuestionMakerReview = () => {
                     : "circle-red"
                 }
               ></div>
-              <h3 className="alternative">{"B)  " + "Falso"}</h3>
+              <h3 className="alternative">{"Falso"}</h3>
             </div>
           )}
         </div>
