@@ -1,133 +1,173 @@
-import { useState } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import "./style.css";
-import { useNavigate } from "react-router-dom/dist"
+import { useNavigate } from "react-router-dom";
 import Modal from "../Modal";
+import { Room, RoomsService } from "../../services/Rooms/RommsService";
+import { RoomList } from "../../services/Rooms/RommsService";
+import useSession from "../../zus/session";
+const roomsData: RoomList = [];
 
-
-const roomsData = [
-    {
-        id: 1,
-        name: "Champions",
-        data: "20/12/2022",
-    },
-    {
-        id: 2,
-        name: "X-men",
-        data: "01/04/2023",
-    },
-    {
-        id: 3,
-        name: "Panela FC",
-        data: "15/09/2021",
-    },
-    {
-        id: 4,
-        name: "Teste",
-        data: "19/04/2022",
-    },
-    {
-        id: 5,
-        name: "Boi do Piauí",
-        data: "05/03/2022",
-    },
-    {
-        id: 3,
-        name: "Honda Civic",
-        data: "28/08/2022",
-    },
-]
+export const currentSessionId = 0;
 
 const Management = () => {
+  const [allRooms, setAllRooms] = useState(roomsData);
+  const [rooms, setRooms] = useState(roomsData);
+  const [trigger, setTrigger] = useState(false);
+  const [currentNumberOfQuestions, setCurrentNumberOfQuestions] = useState(0);
+  const [disableGroup, setDisableGroup] = useState(false);
+  const [totalQuestions, setTotalQuestions] = useState(0);
 
-    const [rooms, setRooms] = useState(roomsData);
+  useEffect(() => {
+    RoomsService.getAll().then((response) => {
+      if (response instanceof Error) {
+        alert(response.message);
+        return;
+      }
+      setRooms(response);
+      setAllRooms(response);
+    });
+  }, []);
 
-    const [trigger, setTrigger] = useState(false);
-
-    let strSearch = "";
-    const getRoomsFiltered = (event: any, strSearch: string) => {
-        event.preventDefault();
-        const data = roomsData.filter(room => room.name.includes(strSearch) || room.data.includes(strSearch));
-        setRooms(data);
-    };
-
-    const handleInput = (event: any) => {
-        strSearch = event.target.value;
-    };
-
-    
-    const showModal = () =>{
-        setTrigger(true);
-    }
-
-    let navigate = useNavigate();
-    const routeChange = () => {
-        let path = `create-room`;
-        navigate(path);
-    }
-    const routeChangeGroupLeader = () => {
-        let path = "/group-leader";
-        navigate(path);
-    }
-    const routeChangeHost = () => {
-        let path = "/host";
-        navigate(path);
-    }
-
-    
-    return (
-        <>
-            <div className="management-content">
-                <div className="searchBox">
-                    <form action="">
-                        <input
-                            type={"text"}
-                            placeholder="Ex.: Sala Champions"
-                            onChange={() => handleInput(event)}
-                        />
-                        <button onClick={($event) => getRoomsFiltered($event, strSearch)}>Buscar</button>
-                    </form>
-                </div>
-                <div className="rooms-list">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Nome da Sala</th>
-                                <th>Entrar na Sala</th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            {rooms.map(room => (
-                                <tr>
-                                    <td>{room.data}</td>
-                                    <td>{room.name}</td>
-                                    <td>
-                                        <button 
-                                            className="join-button" 
-                                            type="button"
-                                            onClick={showModal}>Entrar</button>
-                                    </td>
-                                </tr>
-                            ))}
-
-                        </tbody>
-                    </table>
-                    
-                </div>
-                <Modal trigger={trigger} setTrigger={setTrigger} modalText="Como deseja entrar?">
-                    <div>
-                        <button className="modal-btn" onClick={routeChangeGroupLeader}>Líder de Grupo</button>
-                        <button className="modal-btn" onClick={routeChangeHost}>Anfitrião</button>
-                    </div>
-                </Modal>           
-                <button
-                    className="create-room-button"
-                    type="button"
-                    onClick={routeChange}>Criar Sala</button>
-            </div>
-        </>
+  const getRoomsFiltered = (event: any, strSearch: string) => {
+    event.preventDefault();
+    const data = allRooms.filter(
+      (room) =>
+        room.sessionName.toLowerCase().includes(strSearch.toLowerCase()) ||
+        room.createdIn.includes(strSearch)
     );
-}
 
-export default Management
+    setRooms(data);
+  };
+  let strSearch = "";
+  const handleInput = (event: any) => {
+    strSearch = event.target.value;
+  };
+
+  useEffect(() => {
+    if (totalQuestions >= currentNumberOfQuestions) {
+      setDisableGroup(true);
+    } else {
+      setDisableGroup(false);
+    }
+  }, [totalQuestions]);
+
+  const changeSession = useSession((state) => state.changeSession);
+  const showModal = (session: Room) => {
+    RoomsService.getNumberOfQuestionsCreated(session.sessionId).then(
+      (response) => {
+        if (response instanceof Error) {
+          alert(response.message);
+          return;
+        }
+        setTotalQuestions(response);
+      }
+    );
+    changeSession(session);
+    setCurrentNumberOfQuestions(
+      session.numberOfQuestions * session.numberOfChallengers
+    );
+
+    if (
+      totalQuestions >= currentNumberOfQuestions &&
+      currentNumberOfQuestions !== 0
+    ) {
+      setDisableGroup(true);
+    } else {
+      setDisableGroup(false);
+    }
+    setTrigger(true);
+  };
+
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `create-room`;
+    navigate(path);
+  };
+  const routeChangeGroupLeader = () => {
+    let path = "/group-leader";
+    navigate(path);
+  };
+  const routeChangeHost = () => {
+    let path = "/host";
+    navigate(path);
+  };
+
+  function showOnlyDate(createdIn: string): import("react").ReactNode {
+    let date = createdIn.slice(0, 10);
+    return date;
+  }
+
+  return (
+    <>
+      <div className="management-content">
+        <div className="searchBox">
+          <form action="">
+            <input
+              type={"text"}
+              placeholder="Ex.: Sala Champions"
+              onChange={() => handleInput(event)}
+            />
+            <button onClick={($event) => getRoomsFiltered($event, strSearch)}>
+              Buscar
+            </button>
+          </form>
+        </div>
+        <div className="rooms-list">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Nome da Sala</th>
+                <th>Entrar na Sala</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rooms.map((room) => (
+                <tr>
+                  <td>{showOnlyDate(room.createdIn)}</td>
+                  <td>{room.sessionName}</td>
+                  <td>
+                    <button
+                      className="join-button"
+                      type="button"
+                      onClick={() => showModal(room)}
+                    >
+                      Entrar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Modal
+          trigger={trigger}
+          setTrigger={setTrigger}
+          modalText="Como deseja entrar?"
+        >
+          <div>
+            <button
+              disabled={disableGroup}
+              className="modal-btn"
+              onClick={routeChangeGroupLeader}
+            >
+              Líder de Grupo
+            </button>
+            <button className="modal-btn" onClick={routeChangeHost}>
+              Anfitrião
+            </button>
+          </div>
+        </Modal>
+        <button
+          className="create-room-button"
+          type="button"
+          onClick={routeChange}
+        >
+          Criar Sala
+        </button>
+      </div>
+    </>
+  );
+};
+
+export default Management;

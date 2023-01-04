@@ -12,8 +12,10 @@
     "axios": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-native-web": "^0.18.10",
     "sass": "^1.56.1",
-    "sass-loader": "^13.2.0"
+    "sass-loader": "^13.2.0",
+    "zustand": "^4.1.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",

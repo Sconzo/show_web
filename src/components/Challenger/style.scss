@@ -1,3 +1,7 @@
+:root{
+    --color-option: white;
+}
+
 .challenger-content{
     height: auto;
     align-items: center;
@@ -75,7 +79,7 @@
 }
 
 .invisible:checked ~ label{
-    background-color: yellow;
+    background-color: var(--color-option);
 }
 
 .btn-confirm{
