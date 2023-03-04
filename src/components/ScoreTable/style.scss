@@ -1,0 +1,39 @@
+.score-table-list {
+    overflow-y: scroll;
+    max-height: 244px;
+    box-shadow: rgb(0 0 0 / 30%) 0px 19px 38px, rgb(0 0 0 / 22%) 0px 15px 12px;
+    border-radius: 6px;
+    width: 600px;
+    margin: 40px auto 30px auto;
+}
+
+.score-table-list table {
+    width: 100%;
+    
+    color: #c1c1c1;
+}
+
+.score-table-list thead {
+    background-color: #616174;
+    font-weight: bolder;
+    position: sticky;
+    top: 0;
+}
+
+.score-table-list th, .score-table-list td {
+    padding: 20px;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+
+.score-table-list tr:first-child td {
+    background-color: #D1B000
+}
+
+.score-table-list tr:nth-child(2) td {
+    background-color: #b4b4b4;
+}
+.score-table-list tr:nth-child(3) td {
+    background-color: #6a3805
+}

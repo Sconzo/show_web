@@ -437,12 +437,6 @@ function QuestionMaker() {
     (session.numberOfQuestions * session.numberOfChallengers) /
     session.numberOfGroups;
 
-  console.log("State : ");
-  console.log(state);
-  console.log("Form : ");
-  console.log(formData);
-  console.log("Questions : ");
-  console.log(questions);
   return (
     <>
       <div className="content-maker">
