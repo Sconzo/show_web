@@ -11,9 +11,9 @@ import QuestionMakerReview from "./components/QuestionMakerReview";
 import QuestionMakerWait from "./components/QuestionMakerWait";
 import Challenger from "./components/Challenger";
 import Score from "./components/Score";
+import ScoreTable from "./components/ScoreTable";
 
 function App(): JSX.Element {
-  let questions = [{ teste: "" }];
   return (
     <>
       <Header />
@@ -32,6 +32,7 @@ function App(): JSX.Element {
         <Route path="/review" element={<QuestionMakerReview />}></Route>
         <Route path="/challenger" element={<Challenger />}></Route>
         <Route path="/score" element={<Score />}></Route>
+        <Route path="/score-table" element={<ScoreTable />}></Route>
       </Routes>
     </>
   );

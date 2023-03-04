@@ -19,21 +19,47 @@ const Score = () => {
     let path = `/challenger`;
     navigate(path);
   };
+  const goToScoreTable = () => {
+    let path = `/score-table`;
+    navigate(path);
+  };
 
-  console.log(currentChallenger);
+  let greetingMessage = "";
+  let details = "";
+  console.log(currentChallenger.score);
+
+  if (currentChallenger.score > 0) {
+    greetingMessage = "Parabéns " + currentChallenger.name;
+    if (currentChallenger.score == 1) {
+      details = "Você acertou " + currentChallenger.score + " questão";
+    } else {
+      details = "Você acertou " + currentChallenger.score + " questões";
+    }
+  } else {
+    greetingMessage = "Que pena " + currentChallenger.name;
+    details = "Você não acertou nenhuma questão ";
+  }
+
   return (
     <div className="score-content">
-      <span>
-        PARABÉNS {currentChallenger.name}! Você acertou:{" "}
-        {currentChallenger.score} questões
-      </span>
+      <div className="title-score">
+        <p>{greetingMessage}</p>
+      </div>
+      <div className="score-details">
+        <p>{details}</p>
+      </div>
 
-      <button
-        onClick={changeRouteBack}
-        disabled={pos >= session.numberOfChallengers - 1}
-      >
-        Próximo Desafiante
-      </button>
+      {pos < session.numberOfChallengers - 1 && (
+        <button className="btn-end-challenger" onClick={changeRouteBack}>
+          Vamos {challengers[pos + 1].name}
+        </button>
+      )}
+
+      {pos >= session.numberOfChallengers - 1 && (
+        <button className="btn-end-challenger" onClick={goToScoreTable}>
+          Ver Resultado
+        </button>
+      )}
     </div>
   );
 };
