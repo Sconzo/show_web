@@ -28,7 +28,7 @@ interface IQuestion{
     questionDescription: string,
     type:string,
     level:string,
-    options: optArrayType,   
+    options: optArrayType,
     sessionId:number,
   }
 
@@ -50,7 +50,7 @@ const getQuestionById = async (questionId : number): Promise<Question | Error> =
 
 const getQuestionsForSession = async (sessionId : number): Promise<QuestionDisplayList| Error> => {
     try{
-        const { data } = await Api.get(`/question/${sessionId}`)
+        const { data } = await Api.get(`/question?sessionId=${sessionId}`)
         if(data){
             return(data);
         }
@@ -63,12 +63,12 @@ const getQuestionsForSession = async (sessionId : number): Promise<QuestionDispl
 
 const checkCorrectAnswer = async (choiceId : number, questionId : number): Promise<Boolean | Error> => {
     try{
-        const { data } = await Api.get('/question/check',{ params: { 
+        const { data } = await Api.get('/question/check',{ params: {
             choiceId: choiceId,
             questionId: questionId,
          } })
         if(data || data===false){
-            return(data); 
+            return(data);
         }
         return new Error("Sem dados");
     }
