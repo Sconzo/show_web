@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
-import { getQuestionById, saveQuestion } from "../../services/questionsService";
 import {
   optArrayType,
   QuestionService,
