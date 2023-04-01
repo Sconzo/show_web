@@ -5,7 +5,8 @@ const Api = axios.create({
     baseURL:"https://young-thor-beige-morocco.bohr.io/api/",
     responseType:"json",
     headers:{
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
     }
 });
 
