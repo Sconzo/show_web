@@ -2,7 +2,7 @@ import axios from 'axios'
 import { errorInterceptor, responseInterceptor } from './interceptors';
 
 const Api = axios.create({
-  baseURL:"https://great-volleyball-gold-ireland.bohr.io",
+  baseURL:"https://young-thor-beige-morocco.bohr.io/api",
   responseType:"json",
   headers:{
     "Content-Type": "application/json",
